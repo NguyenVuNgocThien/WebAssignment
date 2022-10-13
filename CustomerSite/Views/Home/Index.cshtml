@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="body2">
+    <div class="slider">
+        <div class="slides">
+            <input type="radio" name="radio-btn" id="rad1" hidden/>
+            <input type="radio" name="radio-btn" id="rad2" hidden/>
+            <input type="radio" name="radio-btn" id="rad3" hidden/>
+            <input type="radio" name="radio-btn" id="rad4" hidden/>
+            <div class="slide first">
+                <img src="~/Images/poster/banner.jpg" width="800px" height="500px" />
+            </div>
+            <div class="slide">
+                <img src="~/Images/poster/fanta.jpg" width="800px" height="500px" />
+            </div>
+            <div class="slide">
+                <img src="~/Images/poster/kom.jpg" width="800px" height="500px" />
+            </div>
+            <div class="slide">
+                <img src="~/Images/poster/milk.jpg" width="800px" height="500px" />
+            </div>
+            <div class="navigation-auto">
+                <div class="auto-btn1"></div>
+                <div class="auto-btn2"></div>
+                <div class="auto-btn3"></div>
+                <div class="auto-btn4"></div>
+            </div>
+        </div>
+        <div class="navigation-manual">
+            <label for="rad1" class="manual-btn"></label>
+            <label for="rad2" class="manual-btn"></label>
+            <label for="rad3" class="manual-btn"></label>
+            <label for="rad4" class="manual-btn"></label>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var count = 1;
+    setInterval(function () {
+        document.getElementById('rad' + count).checked = true;
+        count++;
+        if (count > 4) {
+            count = 1;
+        }
+    },5000);
+</script>

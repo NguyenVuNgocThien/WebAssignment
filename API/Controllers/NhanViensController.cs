@@ -23,6 +23,11 @@ namespace API.Controllers
         {
             return context.Nhanviens.ToList();
         }
+        [HttpGet("{id}")]
+        public Nhanvien GetByID(int id)
+        {
+            return context.Nhanviens.FirstOrDefault(n => n.MaNv == id);
+        }
 
     }
 }
