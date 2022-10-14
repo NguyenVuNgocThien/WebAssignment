@@ -28,6 +28,9 @@ namespace API
         {
 
             services.AddControllers();
+            services.AddCors(o=> {
+                o.AddPolicy("Cors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -43,9 +46,9 @@ namespace API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
-
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
+            app.UseCors("Cors");
             app.UseRouting();
 
             app.UseAuthorization();

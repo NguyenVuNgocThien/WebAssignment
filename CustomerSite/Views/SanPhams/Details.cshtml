@@ -1,0 +1,66 @@
+﻿@model SharedModel.Models.SanPham
+@using SharedModel.Models
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Chi tiết sản phẩm</h2>
+
+<div>
+    <h4>SanPham</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tên Sản Phẩm
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenSp)
+        </dd>
+
+        <dt>
+            Đơn vị tính
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Donvitinh)
+        </dd>
+
+        <dt>
+            Đơn giá
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dongia)
+        </dd>
+        <dt>
+            Loại Sản Phẩm
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaLoaiSpNavigation.TenLoaiSp)
+        </dd>
+        <dt>
+            Hình Ảnh
+        </dt>
+
+        <dd>
+            <img src="~/@Model.HinhSp" class="card-img-top" alt="..."  width="10" height="20">
+        </dd>
+        <dt>
+
+        </dt>
+        <dd>
+            <br />
+            <a class="btn btn-success btn-sm" href="@Url.Action("AddToCart","GioHangs",new { MaSP=Model.MaSp})">
+                <span class="btn btn-success btn-sm"></span> Thêm Vào Giỏ
+            </a>
+            <a class="btn btn-success btn-sm" href="@Url.Action("Index","Home",new { MaSP=Model.MaSp})">
+                <span class="btn btn-success btn-sm"></span> Trở Về
+            </a>
+        </dd>
+
+
+    </dl>
+</div>

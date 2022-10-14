@@ -1,21 +1,22 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
 }
 <div class="body2">
     <div class="slider">
         <div class="slides">
-            <input type="radio" name="radio-btn" id="rad1" hidden/>
-            <input type="radio" name="radio-btn" id="rad2" hidden/>
-            <input type="radio" name="radio-btn" id="rad3" hidden/>
-            <input type="radio" name="radio-btn" id="rad4" hidden/>
+            <input type="radio" name="radio-btn" id="rad1" hidden />
+            <input type="radio" name="radio-btn" id="rad2" hidden />
+            <input type="radio" name="radio-btn" id="rad3" hidden />
+            <input type="radio" name="radio-btn" id="rad4" hidden />
             <div class="slide first">
-                <img src="~/Images/poster/banner.jpg" width="800px" height="500px" />
+                <img src="~/images/poster/banner.jpg" width="800px" height="500px" />
             </div>
             <div class="slide">
-                <img src="~/Images/poster/fanta.jpg" width="800px" height="500px" />
+                <img src="~/images/poster/fanta.jpg" width="800px" height="500px" />
             </div>
             <div class="slide">
-                <img src="~/Images/poster/kom.jpg" width="800px" height="500px" />
+                <img src="~/images/poster/kom.jpg" width="800px" height="500px" />
             </div>
             <div class="slide">
                 <img src="~/Images/poster/milk.jpg" width="800px" height="500px" />
@@ -43,5 +44,50 @@
         if (count > 4) {
             count = 1;
         }
-    },5000);
+    }, 5000);
+</script>
+<div class="row">
+    <div class="col-4">
+        <h5>Filter By Price</h5>
+        <hr>
+        <form>
+        </form>
+    </div>
+    <div class="col-8">
+        <div id="listproduct" class="row">
+            
+        </div>
+    </div>
+</div>
+<script>
+
+    var api = 'https://localhost:44327/api/Sanphams';
+
+    function start() {
+        getListProduct(renderListProduct);
+    }
+
+    start();
+
+    function getListProduct(callback) {
+        fetch(api)
+            .then(function (reponse) {
+                return reponse.json();
+            }).then(callback);
+    }
+    function renderListProduct(products) {
+        var listProduct = document.querySelector('#listproduct');
+        var htmls = products.map(function (product) {
+            return `<div  class="col-sm-4 style="background-color:lavender;margin-top:5px;text-align:center;">
+                <div  class="card" style="width: 18rem;">
+                    <img src="${product.hinhSp}" class="card-img-top" alt="..." width="100" height="200">
+                    <div class="card-body">
+                        <h5 class="card-title">${product.tenSp}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${product.dongia}</h6>
+                    </div>
+                </div>
+            </div>`;
+        });
+        listProduct.innerHTML = htmls.join('')
+    }
 </script>
