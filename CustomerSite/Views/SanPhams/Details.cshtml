@@ -8,59 +8,48 @@
 <h2>Chi tiết sản phẩm</h2>
 
 <div>
-    <h4>SanPham</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Tên Sản Phẩm
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TenSp)
-        </dd>
-
-        <dt>
-            Đơn vị tính
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Donvitinh)
-        </dd>
-
-        <dt>
-            Đơn giá
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Dongia)
-        </dd>
-        <dt>
-            Loại Sản Phẩm
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MaLoaiSpNavigation.TenLoaiSp)
-        </dd>
-        <dt>
-            Hình Ảnh
-        </dt>
-
-        <dd>
-            <img src="~/@Model.HinhSp" class="card-img-top" alt="..."  width="10" height="20">
-        </dd>
-        <dt>
-
-        </dt>
-        <dd>
-            <br />
-            <a class="btn btn-success btn-sm" href="@Url.Action("AddToCart","GioHangs",new { MaSP=Model.MaSp})">
-                <span class="btn btn-success btn-sm"></span> Thêm Vào Giỏ
-            </a>
-            <a class="btn btn-success btn-sm" href="@Url.Action("Index","Home",new { MaSP=Model.MaSp})">
-                <span class="btn btn-success btn-sm"></span> Trở Về
-            </a>
-        </dd>
-
-
-    </dl>
+    <div class="card mb-3" style="max-width: 540px;">
+        <div id="products" class="row no-gutters">
+            
+        </div>
+    </div>
 </div>
+<script>
+
+    var api = 'https://localhost:44327/api/Sanphams/@Model.MaSp';
+
+    function start() {
+        getProduct(renderProduct);
+    }
+
+    start();
+
+    function getProduct(callback) {
+        fetch(api)
+            .then(function (reponse) {
+                return reponse.json();
+            }).then(callback);
+    }
+    function renderProduct(ps) {
+        var prs = document.getElementById('products');
+        var htmls = [ps].map(function (p) {
+            return `<div class="col-md-4">
+                <img src="${p.hinhSp}" class="card-img" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">${p.tenSp}</h5>
+                    <p class="card-text">Đơn vị tính:${p.donvitinh}</p>
+                    <p class="card-text">Đơn giá:${p.dongia}</p>
+                    <p class="card-text">Loại Sản Phẩm:${p.maloaiSp.tenLoaiSp}</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>`;
+        });
+        prs.innerHTML = htmls.join('')
+    }
+</script>
+
+
+

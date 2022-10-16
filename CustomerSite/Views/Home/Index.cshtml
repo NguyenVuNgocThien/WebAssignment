@@ -78,12 +78,13 @@
     function renderListProduct(products) {
         var listProduct = document.querySelector('#listproduct');
         var htmls = products.map(function (product) {
-            return `<div  class="col-sm-4 style="background-color:lavender;margin-top:5px;text-align:center;">
+            return `<div  class="col-sm-4 ">
                 <div  class="card" style="width: 18rem;">
                     <img src="${product.hinhSp}" class="card-img-top" alt="..." width="100" height="200">
                     <div class="card-body">
                         <h5 class="card-title">${product.tenSp}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${product.dongia}</h6>
+                        <a class="btn btn-info btn-sm" href="https://localhost:44354/SanPhams/Details/${product.maSp}">Xem Chi Tiet</a>
                     </div>
                 </div>
             </div>`;

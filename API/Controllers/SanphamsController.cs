@@ -22,8 +22,9 @@ namespace API.Controllers
         [HttpGet]
         public List<SanPham> Get()
         {
-            return context.SanPhams.ToList();
+            return context.SanPhams.Select(s => s).ToList();
         }
+        [HttpGet("{MaSP}")]
         public SanPham Get(string MaSP)
         {
             return context.SanPhams.FirstOrDefault(s => s.MaSp == MaSP);

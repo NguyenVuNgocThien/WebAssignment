@@ -11,6 +11,9 @@ a.navbar-brand {
 a {
   color: #0366d6;
 }
+.dl-horizontal dt {
+    white-space: normal;
+}
 
 .btn-primary {
   color: #fff;
@@ -60,7 +63,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  margin-bottom: 80px;
 
 }
 .body2 {
