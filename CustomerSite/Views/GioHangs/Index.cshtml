@@ -1,0 +1,71 @@
+﻿@model IEnumerable<SharedModel.Models.GioHang>
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (Model == null)
+{
+    <p class="text-info text-center">Chưa có SP trong giỏ hàng</p>
+
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Mã Sản Phẩm</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@item.MaSp</td>
+                            <td>
+                                <a target="_blank" href="@Url.Action("Details", "Sanphams", new { id = item.MaSp })">@item.MaSpNavigation.TenSp</a>
+                            </td>
+                            <td>
+                                <form action="@Url.Action("Update")" method="get">
+                                    <input type="hidden" name="MaSP" value="@item.MaSp" />
+                                    <input type="number" min="1" name="txtSL" value="@item.SoLuong" />
+                                    <button type="submit" class="btn btn-success btn-sm">Cập nhật</button>
+                                </form>
+                            </td>
+                            <td>@item.MaSpNavigation.Dongia.ToString() VND</td>
+                            <td>@item.ThanhTien VND</td>
+                            <td>
+                                <a href="@Url.Action("DelCartItem", new { MaSP = item.MaSp })" onclick="return confirm('Xóa SP này ?');" class="btn btn-danger btn-sm">Xóa SP</a>
+
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td class="text-right">Tổng Số Lượng</td>
+                        <td>@Model.Sum(m => m.SoLuong)</td>
+                        <td class="text-right">Tổng tiền</td>
+                        <td>@Model.Sum(m => m.ThanhTien) VND</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <form >
+                                <a class="btn btn-success btn-sm" href="@Url.Action("Order","GioHangs",new { MaKH="KH02"})">
+                                    <span class="btn btn-success btn-sm"></span> Đặt Hàng
+                                </a>
+                                <a class="btn btn-success btn-sm" href="@Url.Action("Index","Home")">
+                                    Tiếp tục mua hàng
+                                </a>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+}

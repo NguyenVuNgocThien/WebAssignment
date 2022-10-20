@@ -1,6 +1,12 @@
-﻿
+﻿@model IEnumerable<SharedModel.Models.SanPham>
+@using SharedModel.Models;
 @{
     ViewData["Title"] = "Home Page";
+}
+@{
+    qlbanhangContext context = new qlbanhangContext();
+    List<LoaiSp> loaiSp = new List<LoaiSp>();
+    loaiSp = context.LoaiSps.ToList();
 }
 <div class="body2">
     <div class="slider">
@@ -48,47 +54,37 @@
 </script>
 <div class="row">
     <div class="col-4">
-        <h5>Filter By Price</h5>
+        <h5>Lọc Sản Phẩm</h5>
         <hr>
         <form>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Theo Loại Sản Phẩm
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @foreach (var item in loaiSp)
+                    {
+                        <a class="dropdown-item" href="@Url.Action("Index","Home",new { maLoaiSp=item.MaLoaiSp})">@item.TenLoaiSp</a>
+                    }
+                </div>
+            </div>
         </form>
     </div>
     <div class="col-8">
         <div id="listproduct" class="row">
-            
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-4 ">
+                    <div class="card" style="width: 18rem;">
+                        <img src="~/@item.HinhSp" class="card-img-top" alt="..." width="100" height="200">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.TenSp</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@item.Dongia</h6>
+                            <a class="btn btn-info btn-sm" href="@Url.Action("Details","Sanphams",new { id = item.MaSp })">Xem Chi Tiet</a>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
-<script>
-
-    var api = 'https://localhost:44327/api/Sanphams';
-
-    function start() {
-        getListProduct(renderListProduct);
-    }
-
-    start();
-
-    function getListProduct(callback) {
-        fetch(api)
-            .then(function (reponse) {
-                return reponse.json();
-            }).then(callback);
-    }
-    function renderListProduct(products) {
-        var listProduct = document.querySelector('#listproduct');
-        var htmls = products.map(function (product) {
-            return `<div  class="col-sm-4 ">
-                <div  class="card" style="width: 18rem;">
-                    <img src="${product.hinhSp}" class="card-img-top" alt="..." width="100" height="200">
-                    <div class="card-body">
-                        <h5 class="card-title">${product.tenSp}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">${product.dongia}</h6>
-                        <a class="btn btn-info btn-sm" href="https://localhost:44354/SanPhams/Details/${product.maSp}">Xem Chi Tiet</a>
-                    </div>
-                </div>
-            </div>`;
-        });
-        listProduct.innerHTML = htmls.join('')
-    }
-</script>

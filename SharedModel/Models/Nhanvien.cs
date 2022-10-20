@@ -10,6 +10,7 @@ namespace SharedModel.Models
         public Nhanvien()
         {
             HoaDons = new HashSet<HoaDon>();
+            TaiKhoanDangNhaps = new HashSet<TaiKhoanDangNhap>();
         }
 
         public int MaNv { get; set; }
@@ -19,5 +20,6 @@ namespace SharedModel.Models
         public string Dienthoai { get; set; }
 
         public virtual ICollection<HoaDon> HoaDons { get; set; }
+        public virtual ICollection<TaiKhoanDangNhap> TaiKhoanDangNhaps { get; set; }
     }
 }

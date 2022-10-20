@@ -1,6 +1,8 @@
 ﻿using CustomerSite.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SharedModel.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,15 +14,32 @@ namespace CustomerSite.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private readonly qlbanhangContext context = new qlbanhangContext();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int maloaisp=0,string Tim="")
         {
-            return View();
+            if (Tim != null)
+            {
+                var sps = context.SanPhams.Include(s => s.MaLoaiSpNavigation).Where(s => s.TenSp.ToUpper().Contains(Tim.ToUpper()));
+                return View(sps.ToList());
+            }
+            else
+            {
+                if (maloaisp == 0)
+                {
+                    var sps = context.SanPhams.Include(s => s.MaLoaiSpNavigation);
+                    return View(sps.ToList());
+                }
+                else
+                {
+                    var sps = context.SanPhams.Include(s => s.MaLoaiSpNavigation).Where(s => s.MaLoaiSp == maloaisp);
+                    return View(sps.ToList());
+                }
+            }
         }
 
         public IActionResult Privacy()

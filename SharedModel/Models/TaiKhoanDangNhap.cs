@@ -14,5 +14,7 @@ namespace SharedModel.Models
         public int? MaQuyen { get; set; }
 
         public virtual KhachHang MaKhNavigation { get; set; }
+        public virtual Nhanvien MaNvNavigation { get; set; }
+        public virtual PhanQuyen MaQuyenNavigation { get; set; }
     }
 }

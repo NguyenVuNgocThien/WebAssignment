@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,15 +36,8 @@ namespace CustomerSite.Controllers
                 return NotFound();
             }
 
-            var sanPham = await _context.SanPhams
-                .Include(s => s.MaLoaiSpNavigation)
-                .FirstOrDefaultAsync(m => m.MaSp == id);
-            if (sanPham == null)
-            {
-                return NotFound();
-            }
-
-            return View(sanPham);
+            var qlbanhangContext = _context.SanPhams.Include(s => s.MaLoaiSpNavigation).FirstOrDefault(s=>s.MaSp==id);
+            return View( qlbanhangContext);
         }
 
         // GET: SanPhams/Create

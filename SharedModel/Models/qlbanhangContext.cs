@@ -67,23 +67,20 @@ namespace SharedModel.Models
 
             modelBuilder.Entity<GioHang>(entity =>
             {
-                entity.HasKey(e => e.MaGh);
+                entity.HasKey(e => new { e.MaSp, e.MaKh })
+                    .HasName("PK_GioHang_1");
 
                 entity.ToTable("GioHang");
 
-                entity.Property(e => e.MaGh)
+                entity.Property(e => e.MaSp)
                     .HasMaxLength(4)
-                    .HasColumnName("MaGH");
+                    .HasColumnName("MaSP");
 
                 entity.Property(e => e.MaKh)
-                    .IsRequired()
                     .HasMaxLength(4)
                     .HasColumnName("MaKH");
 
-                entity.Property(e => e.MaSp)
-                    .IsRequired()
-                    .HasMaxLength(4)
-                    .HasColumnName("MaSP");
+                entity.Property(e => e.IsDatHang).HasColumnName("isDatHang");
 
                 entity.HasOne(d => d.MaKhNavigation)
                     .WithMany(p => p.GioHangs)
@@ -191,9 +188,11 @@ namespace SharedModel.Models
 
             modelBuilder.Entity<PhanQuyen>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.MaQuyen);
 
                 entity.ToTable("PhanQuyen");
+
+                entity.Property(e => e.MaQuyen).ValueGeneratedNever();
 
                 entity.Property(e => e.TenQuyen).HasMaxLength(20);
             });
@@ -221,7 +220,6 @@ namespace SharedModel.Models
                 entity.HasOne(d => d.MaLoaiSpNavigation)
                     .WithMany(p => p.SanPhams)
                     .HasForeignKey(d => d.MaLoaiSp)
-                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_SanPham_LoaiSP");
             });
 
@@ -246,6 +244,16 @@ namespace SharedModel.Models
                     .WithMany(p => p.TaiKhoanDangNhaps)
                     .HasForeignKey(d => d.MaKh)
                     .HasConstraintName("FK_TaiKhoanDangNhap_KhachHang");
+
+                entity.HasOne(d => d.MaNvNavigation)
+                    .WithMany(p => p.TaiKhoanDangNhaps)
+                    .HasForeignKey(d => d.MaNv)
+                    .HasConstraintName("FK_TaiKhoanDangNhap_Nhanvien");
+
+                entity.HasOne(d => d.MaQuyenNavigation)
+                    .WithMany(p => p.TaiKhoanDangNhaps)
+                    .HasForeignKey(d => d.MaQuyen)
+                    .HasConstraintName("FK_TaiKhoanDangNhap_PhanQuyen");
             });
 
             OnModelCreatingPartial(modelBuilder);
