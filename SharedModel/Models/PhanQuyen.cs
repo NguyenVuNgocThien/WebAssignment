@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
 
 namespace SharedModel.Models
 {
-    public partial class PhanQuyen
+    public partial class PhanQuyen:IdentityRole<Guid>
     {
         public PhanQuyen()
         {

@@ -17,19 +17,8 @@ namespace CustomerSite
             _httpClient = httpClient;
         }
 
-        protected Task SetBearerToken(string accessToken)
+        public async Task<T> GetAsync<T>(string url,string accessToken=null)
         {
-            if (accessToken != null)
-            {
-                _httpClient.UseBearerToken(accessToken);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        public async Task<T> GetAsync<T>(string url)
-        {
-
             using var response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
@@ -55,7 +44,6 @@ namespace CustomerSite
 
         public async Task<T> PutAsync<T>(string url, object data)
         {
-
             using var request = new HttpRequestMessage(HttpMethod.Put, url);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -69,7 +57,6 @@ namespace CustomerSite
 
         public async Task<T> DeleteAsync<T>(string url, object data)
         {
-
             using var request = new HttpRequestMessage(HttpMethod.Delete, url);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Content = data.AsJsonContent();

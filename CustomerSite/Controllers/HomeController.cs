@@ -22,7 +22,7 @@ namespace CustomerSite.Controllers
 
         public IActionResult Index(int maloaisp=0,string Tim="")
         {
-            if (Tim != null)
+            if (Tim != "")
             {
                 var sps = context.SanPhams.Include(s => s.MaLoaiSpNavigation).Where(s => s.TenSp.ToUpper().Contains(Tim.ToUpper()));
                 return View(sps.ToList());

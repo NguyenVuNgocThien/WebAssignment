@@ -7,16 +7,16 @@
 <h1>Đăng Ký Tài Khoản</h1>
 
 <hr />
-<form asp-action="Create" asp-controller="TaiKhoanDangNhaps">
-    <div class="form-row">
-        <div asp-validation-summary="ModelOnly" class="form-group col-md-6">
-            <label asp-for="TaiKhoan">User name</label>
-            <input type="text" class="form-control" asp-for="TaiKhoan">
-        </div>
-        <div class="form-group col-md-6">
-            <label asp-for="MatKhau" for="inputPassword4">Password</label>
-            <input type="password" class="form-control" asp-for="MatKhau">
-        </div>
+<form asp-action="Login" asp-controller="TaiKhoanDangNhaps">
+    <div class="form-group col-md-4">
+        <label asp-for="TaiKhoan">User name</label>
+        @Html.TextBox("username", "", new { @class = "form-control" })
     </div>
+    <div class="form-group col-md-4">
+        <label asp-for="MatKhau" for="inputPassword4">Password</label>
+        @Html.Password("pass", "", new {@class="form-control"})
+    </div>
+    <input type="submit" title="Login" />
+    @Html.ValidationSummary()
 </form>
 

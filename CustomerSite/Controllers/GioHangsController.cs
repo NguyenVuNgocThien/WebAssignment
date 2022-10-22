@@ -30,7 +30,7 @@ namespace CustomerSite.Controllers
         // GET: GioHangs
         public async Task<IActionResult> Index()
         {
-            var qlbanhangContext = _context.GioHangs.Include(g => g.MaKhNavigation).Include(g => g.MaSpNavigation).Where(g=>g.IsDatHang==false);
+            var qlbanhangContext = _context.GioHangs.Include(g => g.MaKhNavigation).Include(g => g.MaSpNavigation).Where(g=>g.MaKh==TaiKhoanDangNhap.currentUser.MaKh);
             return View(await qlbanhangContext.ToListAsync());
         }
 
@@ -49,11 +49,11 @@ namespace CustomerSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         public async Task<RedirectToActionResult> AddToCart(string masp)
         {
-            if (_context.GioHangs.FirstOrDefault(m => m.MaSp == masp) == null)
+            if (_context.GioHangs.Where(g=>g.MaKh==TaiKhoanDangNhap.currentUser.MaKh).FirstOrDefault(m => m.MaSp == masp) == null)
             {
                 GioHang gioHang = new GioHang();
                 gioHang.MaSp = masp;
-                gioHang.MaKh = "KH02";
+                gioHang.MaKh = TaiKhoanDangNhap.currentUser.MaKh;
                 gioHang.IsDatHang = false;
                 gioHang.SoLuong = 1;
                 gioHang.ThanhTien = _context.SanPhams.Find(masp).Dongia * gioHang.SoLuong;
@@ -63,7 +63,7 @@ namespace CustomerSite.Controllers
             else
             {
                 GioHang gioHang = new GioHang();
-                gioHang = _context.GioHangs.Where(m => m.MaSp == masp).Where(m=>m.IsDatHang==false).FirstOrDefault(m => m.MaKh == "KH02");
+                gioHang = _context.GioHangs.Where(g => g.MaKh == TaiKhoanDangNhap.currentUser.MaKh).Where(g=>g.IsDatHang==false).FirstOrDefault(m => m.MaSp == masp);
                 if (gioHang != null)
                 {
                     gioHang.SoLuong++;

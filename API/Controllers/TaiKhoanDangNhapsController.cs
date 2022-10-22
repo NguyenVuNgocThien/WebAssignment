@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using SharedModel.Models;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,21 @@ namespace API.Controllers
 
         }
         [HttpGet]
-        public List<TaiKhoanDangNhap> Get()
+        public List<TaiKhoanDangNhap> GetList()
         {
-            return context.TaiKhoanDangNhaps.ToList();
+            return context.TaiKhoanDangNhaps.Include(t => t.MaKhNavigation).Include(t => t.MaNvNavigation).ToList();
+        }
+        [HttpGet("TaiKhoan")]
+        public TaiKhoanDangNhap Get(TaiKhoanDangNhap taiKhoanDangNhap)
+        {
+            return context.TaiKhoanDangNhaps.Where(t => t.TaiKhoan == taiKhoanDangNhap.TaiKhoan).FirstOrDefault(t => t.MatKhau == taiKhoanDangNhap.MatKhau);
+        }
+        [HttpPost]
+        public TaiKhoanDangNhap Post(TaiKhoanDangNhap taiKhoanDangNhap)
+        {
+            context.Add(taiKhoanDangNhap);
+            context.SaveChanges();
+            return taiKhoanDangNhap;
         }
     }
 }

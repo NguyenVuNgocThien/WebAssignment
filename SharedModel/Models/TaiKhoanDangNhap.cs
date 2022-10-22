@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -7,6 +9,7 @@ namespace SharedModel.Models
 {
     public partial class TaiKhoanDangNhap
     {
+        public static TaiKhoanDangNhap currentUser;
         public string TaiKhoan { get; set; }
         public string MatKhau { get; set; }
         public string MaKh { get; set; }

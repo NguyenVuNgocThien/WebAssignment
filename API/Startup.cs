@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,11 +7,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
+using SharedModel.Models;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace API
 {
@@ -30,8 +37,28 @@ namespace API
     .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+            services.AddDbContext<qlbanhangContext>(option =>
+            {
+                option.UseSqlServer(Configuration.GetConnectionString("database"));
+            });
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            var secretKey = Configuration["AppSettings:SecretKey"];
+            var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience=false,
+                        ValidateIssuerSigningKey=true,
+                        IssuerSigningKey=new SymmetricSecurityKey(secretKeyBytes),
+                        ClockSkew=TimeSpan.Zero
+                    };
+                });
             services.AddControllers();
-            services.AddCors(o=> {
+            services.AddCors(o =>
+            {
                 o.AddPolicy("Cors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
             services.AddSwaggerGen(c =>
@@ -53,7 +80,7 @@ namespace API
             app.UseStaticFiles();
             app.UseCors("Cors");
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
