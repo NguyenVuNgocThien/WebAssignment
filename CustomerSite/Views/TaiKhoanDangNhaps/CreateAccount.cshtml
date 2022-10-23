@@ -1,0 +1,36 @@
+﻿@model SharedModel.Models.TaiKhoanDangNhap
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+<form asp-action="Register" asp-controller="TaiKhoanDangNhaps" >
+    <div class="col-md-5">
+        <label asp-for="TaiKhoan">User Name</label>
+        <input asp-for="TaiKhoan" type="text" class="form-control" placeholder="First name">
+    </div>
+    <div class="col-md-5">
+        <label asp-for="MatKhau">Password</label>
+        <input asp-for="MatKhau" type="password" class="form-control" placeholder="Last name">
+    </div>
+    <div class="col-md-5">
+        <label for="retype">Retype Password</label>
+        @Html.Password("retype", "", new { @class = "form-control" })
+    </div>
+    <div class="col-md-5">
+        <label asp-for="MaKhNavigation.TenKh">Full Name</label>
+        <input asp-for="MaKhNavigation.TenKh" type="text" class="form-control" placeholder="First name">
+    </div>
+    <div class="form-group col-md-5">
+        <label asp-for="MaKhNavigation.DiaChi">Address</label>
+        <input asp-for="MaKhNavigation.DiaChi" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+    </div>
+    <div class="form-row col-md-10">
+        <div class="form-group col-md-5">
+            <label asp-for="MaKhNavigation.DienThoai">Phone</label>
+            <input asp-for="MaKhNavigation.DienThoai" type="text" class="form-control" id="inputCity">
+        </div>
+        <div class="form-group col-md-5">
+            <label asp-for="MaKhNavigation.Email">Email</label>
+            <input asp-for="MaKhNavigation.Email" type="text" class="form-control" id="inputZip">
+        </div>
+    </div>
+    <input type="submit" title="Register" value="Sign Up" />
+    @Html.ValidationSummary()
+</form>

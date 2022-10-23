@@ -18,7 +18,6 @@ namespace SharedModel.Models
         public string TenKh { get; set; }
         public string DiaChi { get; set; }
         public string DienThoai { get; set; }
-        public string Fax { get; set; }
         public string Email { get; set; }
 
         public virtual ICollection<GioHang> GioHangs { get; set; }

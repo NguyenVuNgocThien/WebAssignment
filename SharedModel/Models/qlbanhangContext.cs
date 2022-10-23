@@ -141,11 +141,9 @@ namespace SharedModel.Models
 
                 entity.Property(e => e.DiaChi).HasMaxLength(30);
 
-                entity.Property(e => e.DienThoai).HasMaxLength(7);
+                entity.Property(e => e.DienThoai).HasMaxLength(10);
 
                 entity.Property(e => e.Email).HasMaxLength(50);
-
-                entity.Property(e => e.Fax).HasMaxLength(12);
 
                 entity.Property(e => e.TenKh)
                     .HasMaxLength(30)

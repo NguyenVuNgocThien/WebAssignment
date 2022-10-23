@@ -24,5 +24,12 @@ namespace API.Controllers
         {
             return context.KhachHangs.ToList();
         }
+        [HttpPost]
+        public KhachHang Post(KhachHang kh)
+        {
+            context.Add(kh);
+            context.SaveChanges();
+            return kh;
+        }
     }
 }

@@ -30,23 +30,14 @@ namespace CustomerSite.Controllers
         // GET: GioHangs
         public async Task<IActionResult> Index()
         {
-            var qlbanhangContext = _context.GioHangs.Include(g => g.MaKhNavigation).Include(g => g.MaSpNavigation).Where(g=>g.MaKh==TaiKhoanDangNhap.currentUser.MaKh);
-            return View(await qlbanhangContext.ToListAsync());
+            if (TaiKhoanDangNhap.currentUser != null)
+            {
+                var qlbanhangContext = _context.GioHangs.Include(g => g.MaKhNavigation).Include(g => g.MaSpNavigation).Where(g => g.MaKh == TaiKhoanDangNhap.currentUser.MaKh);
+                return View(await qlbanhangContext.ToListAsync());
+            }
+            else
+                return NoContent();
         }
-
-        // GET: GioHangs/Details/5
-
-        // GET: GioHangs/Create
-        public IActionResult Create()
-        {
-            ViewData["MaKh"] = new SelectList(_context.KhachHangs, "MaKh", "MaKh");
-            ViewData["MaSp"] = new SelectList(_context.SanPhams, "MaSp", "MaSp");
-            return View();
-        }
-
-        // POST: GioHangs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         public async Task<RedirectToActionResult> AddToCart(string masp)
         {
             if (_context.GioHangs.Where(g=>g.MaKh==TaiKhoanDangNhap.currentUser.MaKh).FirstOrDefault(m => m.MaSp == masp) == null)
@@ -63,7 +54,7 @@ namespace CustomerSite.Controllers
             else
             {
                 GioHang gioHang = new GioHang();
-                gioHang = _context.GioHangs.Where(g => g.MaKh == TaiKhoanDangNhap.currentUser.MaKh).Where(g=>g.IsDatHang==false).FirstOrDefault(m => m.MaSp == masp);
+                gioHang = _context.GioHangs.Where(g => g.MaKh == TaiKhoanDangNhap.currentUser.MaKh).FirstOrDefault(m => m.MaSp == masp);
                 if (gioHang != null)
                 {
                     gioHang.SoLuong++;
@@ -76,7 +67,7 @@ namespace CustomerSite.Controllers
         public async Task<RedirectToActionResult> Update(string MaSP, int txtSL)
         {
             GioHang gioHang = new GioHang();
-            gioHang = _context.GioHangs.Where(m => m.MaSp == MaSP).Where(m => m.IsDatHang == false).FirstOrDefault(m => m.MaKh == "KH02");
+            gioHang = _context.GioHangs.Where(m => m.MaSp == MaSP).FirstOrDefault(m => m.MaKh == TaiKhoanDangNhap.currentUser.MaKh);
             if (gioHang != null)
             {
                 gioHang.SoLuong = txtSL;
@@ -88,7 +79,7 @@ namespace CustomerSite.Controllers
         public async Task<RedirectToActionResult> DelCartItem(string MaSP)
         {
             GioHang gioHang = new GioHang();
-            gioHang = _context.GioHangs.Where(g => g.MaSp == MaSP).Where(g=>g.IsDatHang==false).FirstOrDefault(g => g.MaKh == "KH02");
+            gioHang = _context.GioHangs.Where(g => g.MaSp == MaSP).FirstOrDefault(g => g.MaKh == TaiKhoanDangNhap.currentUser.MaKh);
             if (gioHang != null)
             {
                 var httpService = new HttpService(new HttpClient());
@@ -96,9 +87,9 @@ namespace CustomerSite.Controllers
             }
             return RedirectToAction("Index");
         }
-        public async Task<ActionResult> Order(string MaKH)
+        public async Task<ActionResult> Order()
         {
-            List<GioHang> ghs = _context.GioHangs.Where(g => g.MaKh == MaKH).Where(g=>g.IsDatHang==false).ToList();
+            List<GioHang> ghs = _context.GioHangs.Where(g => g.MaKh == TaiKhoanDangNhap.currentUser.MaKh).Where(g=>g.IsDatHang==false).ToList();
             foreach (GioHang gh in ghs)
             {
                 if (gh != null)
