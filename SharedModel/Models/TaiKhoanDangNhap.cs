@@ -8,6 +8,10 @@ namespace SharedModel.Models
     public partial class TaiKhoanDangNhap
     {
         public static TaiKhoanDangNhap currentUser;
+        public static void setUser(TaiKhoanDangNhap taikhoan)
+        {
+            TaiKhoanDangNhap.currentUser = taikhoan;
+        }
         public string TaiKhoan { get; set; }
         public string MatKhau { get; set; }
         public string MaKh { get; set; }

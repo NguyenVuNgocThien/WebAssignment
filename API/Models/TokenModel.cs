@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    public class LoginResponse
+    public class TokenModel
     {
-        public bool Success { get; set; }
-        public string Message { get; set; }
         public string AccessToken { get; set; }
-
         public string RefreshToken { get; set; }
     }
 }

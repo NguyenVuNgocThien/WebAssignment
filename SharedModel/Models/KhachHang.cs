@@ -9,6 +9,7 @@ namespace SharedModel.Models
     {
         public KhachHang()
         {
+            DanhGiaSanPhams = new HashSet<DanhGiaSanPham>();
             GioHangs = new HashSet<GioHang>();
             HoaDons = new HashSet<HoaDon>();
             TaiKhoanDangNhaps = new HashSet<TaiKhoanDangNhap>();
@@ -20,6 +21,7 @@ namespace SharedModel.Models
         public string DienThoai { get; set; }
         public string Email { get; set; }
 
+        public virtual ICollection<DanhGiaSanPham> DanhGiaSanPhams { get; set; }
         public virtual ICollection<GioHang> GioHangs { get; set; }
         public virtual ICollection<HoaDon> HoaDons { get; set; }
         public virtual ICollection<TaiKhoanDangNhap> TaiKhoanDangNhaps { get; set; }

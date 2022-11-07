@@ -32,14 +32,16 @@ namespace CustomerSite.Controllers
         }
         public async Task<IActionResult> Login(string username, string pass)
         {
-            if (_context.TaiKhoanDangNhaps.SingleOrDefault(t => t.TaiKhoan == username && t.MatKhau == pass) != null)
+            if (_context.TaiKhoanDangNhaps.Where(t=>t.MaQuyen==1).SingleOrDefault(t => t.TaiKhoan == username && t.MatKhau == pass) != null)
             {
                 TaiKhoanDangNhap.currentUser = _context.TaiKhoanDangNhaps.SingleOrDefault(t => t.TaiKhoan == username && t.MatKhau == pass);
                 LoginModel login = new LoginModel();
                 login.TaiKhoan = username;
                 login.MatKhau = pass;
+                LoginModel.setLogin(login);
                 var httpService = new HttpService(new HttpClient());
-                var ghs = await httpService.PostAsync<LoginModel>(url: "https://localhost:44327/api/Login/Authenticate", data: login);
+                var tokenResponse = await httpService.GetToken("https://localhost:44348/api/Login/Authenticate", LoginModel.loginModel);
+                var ghs = await httpService.PostAsync<LoginModel>(url: "https://localhost:44348/api/Login/Authenticate", data: login);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -51,18 +53,24 @@ namespace CustomerSite.Controllers
         {
             if (_context.TaiKhoanDangNhaps.FirstOrDefault(t => t.TaiKhoan == taiKhoanDangNhap.TaiKhoan) == null && retype==taiKhoanDangNhap.MatKhau)
             {
-                Random rnd = new Random();
-                int i= rnd.Next(0, 1000);
+                int i = _context.KhachHangs.Count()+1;
                 var httpService = new HttpService(new HttpClient());
                 taiKhoanDangNhap.MaKhNavigation.MaKh = i.ToString();
                 taiKhoanDangNhap.MaKh = taiKhoanDangNhap.MaKhNavigation.MaKh;
-                var ghs = await httpService.PostAsync<TaiKhoanDangNhap>(url: "https://localhost:44327/api/TaiKhoanDangNhaps", data: taiKhoanDangNhap);
+                taiKhoanDangNhap.MaQuyen = 1;
+                var ghs = await httpService.PostAsync<TaiKhoanDangNhap>(url: "https://localhost:44348/api/TaiKhoanDangNhaps", data: taiKhoanDangNhap);
                 return RedirectToAction("Index", "Home");
             }
             else
             {
                 return NoContent();
             }
+        }
+        public async Task<IActionResult> Logout()
+        {
+            TaiKhoanDangNhap taiKhoanDangNhap = null;
+            TaiKhoanDangNhap.setUser(taiKhoanDangNhap);
+            return RedirectToAction("Index", "Home");
         }
     }
         

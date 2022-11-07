@@ -27,7 +27,7 @@ namespace API.Controllers
         [HttpGet("TaiKhoan")]
         public TaiKhoanDangNhap Get(TaiKhoanDangNhap taiKhoanDangNhap)
         {
-            return context.TaiKhoanDangNhaps.Where(t => t.TaiKhoan == taiKhoanDangNhap.TaiKhoan).FirstOrDefault(t => t.MatKhau == taiKhoanDangNhap.MatKhau);
+            return context.TaiKhoanDangNhaps.Include(t => t.MaKhNavigation).Include(t => t.MaNvNavigation).Where(t => t.TaiKhoan == taiKhoanDangNhap.TaiKhoan).FirstOrDefault(t => t.MatKhau == taiKhoanDangNhap.MatKhau);
         }
         [HttpPost]
         public TaiKhoanDangNhap Post(TaiKhoanDangNhap taiKhoanDangNhap)
@@ -35,6 +35,11 @@ namespace API.Controllers
             context.Add(taiKhoanDangNhap);
             context.SaveChanges();
             return taiKhoanDangNhap;
+        }
+        [HttpGet("{username}")]
+        public TaiKhoanDangNhap Get(string username)
+        {
+            return context.TaiKhoanDangNhaps.Include(t => t.MaKhNavigation).Include(t => t.MaNvNavigation).FirstOrDefault(t => t.TaiKhoan == username);
         }
     }
 }

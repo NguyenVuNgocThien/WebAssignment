@@ -24,6 +24,25 @@ namespace API.Controllers
         {
             return context.KhachHangs.ToList();
         }
+        [HttpGet("{id}")]
+        public KhachHang GetByID(string id)
+        {
+            return context.KhachHangs.FirstOrDefault(k=>k.MaKh == id);
+        }
+        [HttpGet("DanhSachKhachHangDangOrder")]
+        public List<KhachHang> GetCustomerOrder()
+        {
+            List<KhachHang> khachHangs = context.KhachHangs.ToList();
+            List<KhachHang> khs = new List<KhachHang>();
+            foreach(KhachHang kh in khachHangs)
+            {
+                if (context.GioHangs.Where(g=>g.IsDatHang==true).FirstOrDefault(g => g.MaKh == kh.MaKh) != null)
+                {
+                    khs.Add(kh);
+                }
+            }
+            return khs;
+        }
         [HttpPost]
         public KhachHang Post(KhachHang kh)
         {

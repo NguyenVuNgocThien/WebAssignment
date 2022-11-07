@@ -8,6 +8,9 @@ a.navbar-brand {
 }
 
 /* Provide sufficient contrast against white background */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css');
+
+
 a {
   color: #0366d6;
 }

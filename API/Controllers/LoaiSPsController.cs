@@ -22,7 +22,31 @@ namespace API.Controllers
         [HttpGet]
         public List<LoaiSp> Get()
         {
-            return context.LoaiSps.ToList();
+            return context.LoaiSps.Include(l=>l.SanPhams).ToList();
+        }
+        [HttpGet("{maLoaiSp}")]
+        public LoaiSp Get(int maLoaiSp)
+        {
+            return context.LoaiSps.Include(l => l.SanPhams).FirstOrDefault(l=>l.MaLoaiSp==maLoaiSp);
+        }
+        [HttpPost]
+        public LoaiSp Post(LoaiSp loaiSp)
+        {
+            int count = context.LoaiSps.Count();
+            loaiSp.MaLoaiSp = count + 1;
+            context.Add(loaiSp);
+            context.SaveChanges();
+            return loaiSp;
+        }
+        [HttpDelete("{maLoaiSp}")]
+        public LoaiSp Del(int maLoaiSp)
+        {
+            if (context.SanPhams.FirstOrDefault(s => s.MaLoaiSp == maLoaiSp) == null)
+            {
+                context.Remove(context.LoaiSps.FirstOrDefault(l => l.MaLoaiSp == maLoaiSp));
+                context.SaveChanges();
+            }
+            return context.LoaiSps.FirstOrDefault(l => l.MaLoaiSp == maLoaiSp);
         }
        
     }

@@ -18,6 +18,7 @@ namespace SharedModel.Models
         }
 
         public virtual DbSet<Cthd> Cthds { get; set; }
+        public virtual DbSet<DanhGiaSanPham> DanhGiaSanPhams { get; set; }
         public virtual DbSet<GioHang> GioHangs { get; set; }
         public virtual DbSet<HoaDon> HoaDons { get; set; }
         public virtual DbSet<KhachHang> KhachHangs { get; set; }
@@ -63,6 +64,33 @@ namespace SharedModel.Models
                     .WithMany(p => p.Cthds)
                     .HasForeignKey(d => d.MaSp)
                     .HasConstraintName("FK_CTHD_SanPham");
+            });
+
+            modelBuilder.Entity<DanhGiaSanPham>(entity =>
+            {
+                entity.HasKey(e => new { e.MaKh, e.MaSp });
+
+                entity.ToTable("DanhGiaSanPham");
+
+                entity.Property(e => e.MaKh)
+                    .HasMaxLength(4)
+                    .HasColumnName("MaKH");
+
+                entity.Property(e => e.MaSp)
+                    .HasMaxLength(4)
+                    .HasColumnName("MaSP");
+
+                entity.HasOne(d => d.MaKhNavigation)
+                    .WithMany(p => p.DanhGiaSanPhams)
+                    .HasForeignKey(d => d.MaKh)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DanhGiaSanPham_KhachHang");
+
+                entity.HasOne(d => d.MaSpNavigation)
+                    .WithMany(p => p.DanhGiaSanPhams)
+                    .HasForeignKey(d => d.MaSp)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DanhGiaSanPham_SanPham");
             });
 
             modelBuilder.Entity<GioHang>(entity =>
@@ -210,6 +238,10 @@ namespace SharedModel.Models
                 entity.Property(e => e.HinhSp).HasColumnName("HinhSP");
 
                 entity.Property(e => e.MaLoaiSp).HasColumnName("MaLoaiSP");
+
+                entity.Property(e => e.NgayCapNhat).HasColumnType("date");
+
+                entity.Property(e => e.NgayTao).HasColumnType("date");
 
                 entity.Property(e => e.TenSp)
                     .HasMaxLength(20)

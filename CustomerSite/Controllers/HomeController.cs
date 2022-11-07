@@ -20,25 +20,19 @@ namespace CustomerSite.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(int maloaisp=0,string Tim="")
+        public async Task<IActionResult> Index(int maloaisp=0,string Tim="")
         {
             if (Tim != "")
             {
-                var sps = context.SanPhams.Include(s => s.MaLoaiSpNavigation).Where(s => s.TenSp.ToUpper().Contains(Tim.ToUpper()));
-                return View(sps.ToList());
+                var httpService = new HttpService(new System.Net.Http.HttpClient());
+                var sps = await httpService.GetAsync<List<SanPham>>(url: "https://localhost:44348/api/Sanphams/SP/" + Tim);
+                return View(sps);
             }
-            else
+            else 
             {
-                if (maloaisp == 0)
-                {
-                    var sps = context.SanPhams.Include(s => s.MaLoaiSpNavigation);
-                    return View(sps.ToList());
-                }
-                else
-                {
-                    var sps = context.SanPhams.Include(s => s.MaLoaiSpNavigation).Where(s => s.MaLoaiSp == maloaisp);
-                    return View(sps.ToList());
-                }
+                    var httpService = new HttpService(new System.Net.Http.HttpClient());
+                    var sps = await httpService.GetAsync<List<SanPham>>(url: "https://localhost:44348/api/Sanphams/loaiSP/" + maloaisp);
+                    return View(sps);
             }
         }
 

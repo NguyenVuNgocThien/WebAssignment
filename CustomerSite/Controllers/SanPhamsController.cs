@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +25,9 @@ namespace CustomerSite.Controllers
         // GET: SanPhams
         public async Task<IActionResult> Index()
         {
-            var qlbanhangContext = _context.SanPhams.Include(s => s.MaLoaiSpNavigation);
-            return View(await qlbanhangContext.ToListAsync());
+            var httpService = new HttpService(new System.Net.Http.HttpClient());
+            var sps = await httpService.GetAsync<List<SanPham>>(url: "https://localhost:44348/api/Sanphams");
+            return View(sps);
         }
 
         // GET: SanPhams/Details/5
@@ -40,6 +42,7 @@ namespace CustomerSite.Controllers
             return View( qlbanhangContext);
         }
 
+        
         // GET: SanPhams/Create
         public IActionResult Create()
         {

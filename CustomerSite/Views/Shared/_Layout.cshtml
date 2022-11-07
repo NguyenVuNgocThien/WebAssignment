@@ -11,14 +11,14 @@
     <section class="topbar bg-light py-1">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="https://localhost:44354/"><img class="img-fluid " src="~/Images/logo.jpg" /></a>
-            <button  class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse " id="navbarSupportedContent">
                 <form class="form-inline my-2 my-lg-0 mr-auto" asp-action="Index" asp-controller="Home">
-                    @Html.TextBox("Tim", "", new {@class="form-control"})
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Search</button>
+                    @Html.TextBox("Tim", "", new { @class = "form-control" })
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <ul class="nav navbar-nav  ">
                     <li>
@@ -30,7 +30,10 @@
                         <a class="nav-link" href="https://localhost:44354/TaiKhoanDangNhaps/CreateAccount"><i class="fa-solid fa-registered"></i>Sign up<span class="sr-only">(current)</span></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="https://localhost:44354/TaiKhoanDangNhaps"><i class="fa-solid fa-right-to-bracket"></i>Sign in<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="https://localhost:44354/TaiKhoanDangNhaps"><i class="fa-solid fa-user"></i>Sign in<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="@Url.Action("Logout","TaiKhoanDangNhaps")"><i class="fa-solid fa-right-to-bracket"></i>Sign out<span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
             </div>
@@ -61,7 +64,10 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/475ebd991e.js" crossorigin="anonymous"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2022.3.913/js/kendo.all.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

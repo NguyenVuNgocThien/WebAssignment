@@ -4,58 +4,83 @@
 @{
     ViewBag.Title = "Details";
 }
-
 <h2>Chi tiết sản phẩm</h2>
-
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <div>
     <hr />
     <div class="card mb-3" style="max-width: 540px;">
         <div id="products" class="row no-gutters">
-
-        </div>
-    </div>
-</div>
-<script>
-
-    var api = 'https://localhost:44327/api/Sanphams/@Model.MaSp';
-
-    function start() {
-        getProduct(renderProduct);
-    }
-
-    start();
-    function getProduct(callback) {
-        fetch(api)
-            .then(function (response) {
-                return response.json();
-            }).then(callback);
-    }
-    function renderProduct(ps) {
-        var prs = document.getElementById('products');
-        var htmls = [ps].map(function (p) {
-            return `
             <div class="col-md-4">
-                <img src="https://localhost:44354/${p.hinhSp}" class="card-img" alt="...">
+                <img src="@Model.HinhSp" class="card-img" alt="...">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">${p.tenSp}</h5>
-                    <p class="card-text">Đơn vị tính:${p.donvitinh}</p>
-                    <p class="card-text">Đơn giá:${p.dongia}</p>
-                    <p class="card-text"> Mã Loại Sản Phẩm:${p.maLoaiSp}</p >
-                    <p class="card-text"> Loại Sản Phẩm:${p.maLoaiSpNavigation.tenLoaiSp}</p >
-                    <a class="btn btn-success btn-sm" href="@Url.Action("AddToCart","GioHangs",new { masp=Model.MaSp})">
+                    <h5 class="card-title">@Model.TenSp</h5>
+                    <p class="card-text">Đơn vị tính:@Model.Donvitinh</p>
+                    <p class="card-text">Đơn giá:@Model.Dongia</p>
+                    <p class="card-text"> Mã Loại Sản Phẩm:@Model.MaLoaiSp</p>
+                    <p class="card-text"> Loại Sản Phẩm:@Model.MaLoaiSpNavigation.TenLoaiSp</p>
+                    @if (TaiKhoanDangNhap.currentUser != null)
+                    {
+                        <div class="form-group">
+                            <span class="text-warning">
+                                <i class="ratingStar fa-regular fa-star" data-value="1"></i>
+                                <i class="ratingStar fa-regular fa-star" data-value="2"></i>
+                                <i class="ratingStar fa-regular fa-star" data-value="3"></i>
+                                <i class="ratingStar fa-regular fa-star" data-value="4"></i>
+                                <i class="ratingStar fa-regular fa-star" data-value="5"></i>
+                            </span>
+                            <input type="hidden" name="Rating" id="ratingValue"/>
+                        </div>
+                        <script>
+                            $(".ratingStar").hover(function () {
+                                $(".ratingStar").addClass("fa-regular").removeClass("fa-solid");
+                                $(this).addClass("fa-solid").removeClass("fa-regular");
+                                $(this).prevAll(".ratingStar").addClass("fa-solid").removeClass("fa-regular");
+                            });
+                            $(".ratingStar").click(function () {
+                                debugger;
+                                var startValue = $(this).attr("data-value");
+                                $.ajax({
+                                    url: 'https://localhost:44348/api/DanhGiaSanPhams',
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({
+                                        maKh:`@TaiKhoanDangNhap.currentUser.MaKh`,
+                                        maSp:`@Model.MaSp`,
+                                        danhGia: startValue
+                                    })
+                                }).done(function (response) {
+                                    if (response.Success) {
+                                        alert("Cảm ơn đã đánh giá");
+                                    }
+                                    else {
+                                        swal("Error!", res.Message, "error");
+                                    }
+                                }).fail(function () {
+                                    swal("Error", "Error Occured.Please try again", "error");
+                                });
+                            });
+                        </script>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="https://localhost:44354/TaiKhoanDangNhaps"><i class="fa-solid fa-user"></i>Sign in to rating and Add to cart<span class="sr-only">(current)</span></a>
+                    }
+                </div>
+
+            </div>
+            <a class="btn btn-success btn-sm" href="@Url.Action("AddToCart","GioHangs",new { masp=Model.MaSp})">
                 <span class="btn btn-success btn-sm"></span> Thêm Vào Giỏ
             </a>
-            <a class="btn btn-success btn-sm" href="@Url.Action("Index","Home")">
+            <a class="btn btn-success btn-sm " href="@Url.Action("Index","Home")">
                 <span class="btn btn-success btn-sm"></span> Trở Về
             </a>
-                </div>
-            </div>`;
-        });
-        prs.innerHTML = htmls.join('')
-    }
-</script>
+        </div>
+    </div>
+</div>
+
 
 
 

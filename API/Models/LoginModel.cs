@@ -8,6 +8,11 @@ namespace API.Models
 {
     public class LoginModel
     {
+        public static LoginModel loginModel;
+        public static void setLogin(LoginModel loginModel)
+        {
+            LoginModel.loginModel = loginModel;
+        }
         public string TaiKhoan { get; set; }
         public string MatKhau { get; set; }
     }

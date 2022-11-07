@@ -10,6 +10,7 @@ namespace SharedModel.Models
         public SanPham()
         {
             Cthds = new HashSet<Cthd>();
+            DanhGiaSanPhams = new HashSet<DanhGiaSanPham>();
             GioHangs = new HashSet<GioHang>();
         }
 
@@ -19,9 +20,12 @@ namespace SharedModel.Models
         public double? Dongia { get; set; }
         public int? MaLoaiSp { get; set; }
         public string HinhSp { get; set; }
+        public DateTime? NgayTao { get; set; }
+        public DateTime? NgayCapNhat { get; set; }
 
         public virtual LoaiSp MaLoaiSpNavigation { get; set; }
         public virtual ICollection<Cthd> Cthds { get; set; }
+        public virtual ICollection<DanhGiaSanPham> DanhGiaSanPhams { get; set; }
         public virtual ICollection<GioHang> GioHangs { get; set; }
     }
 }
