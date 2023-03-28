@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpGet]
         public List<GioHang> Get()
         {
-            return context.GioHangs.Include(g=>g.MaSpNavigation).ToList();
+            return context.GioHangs.Include(g=>g.MaSpNavigation).Include(g=>g.MaKhNavigation).ToList();
         }
         [HttpGet("{MaKh}")]
         [Authorize]
